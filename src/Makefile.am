@@ -18,7 +18,6 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 
-ACLOCAL_AMFLAGS = -I $(top_srcdir)/m4
 lib_LTLIBRARIES = libcopt.la
 
 libcopt_la_SOURCES = autocopt.c emergency.c
