@@ -99,11 +99,11 @@ struct autocopt_control {
 	 */
 	float yaw;
 	/**
-	 * 0 = no Thrust
-	 * 2^16 = full Thrust
-	 * \waring Value below 60000 the copter may instable 
+	 * -1 = no Thrust
+	 * 1 = full Thrust
+	 * \waring Value below 90% the copter may instable 
 	 */
-	uint16_t thrust;
+	float thrust;
 } __attribute__((packed));
 
 /**

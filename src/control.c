@@ -15,7 +15,7 @@
 #define PITCH_STEPSIZE 0.01
 #define ROLL_SETPSIZE 0.01
 #define YAW_SETPSIZE 0.01
-#define THURST_STEPSIZE 1000
+#define THURST_STEPSIZE 0.01
 
 int startx;
 int starty; 
@@ -26,17 +26,17 @@ WINDOW *winBox;
 
 
 struct autocopt_control ctl = {
-	0,0,0,0
+	0,0,0,-1
 };
 struct autocopt_control ctlSave = {
-	0,0,0,0
+	0,0,0,-1
 };
 
 static void updateWin() {
 	mvwprintw(win, 1, 0, "roll:%f", ctl.roll);
 	mvwprintw(win, 2, 0, "pitch:%f", ctl.pitch);
 	mvwprintw(win, 3, 0, "yaw:%f", ctl.yaw);
-	mvwprintw(win, 4, 0, "thrust:%u", ctl.thrust);
+	mvwprintw(win, 4, 0, "thrust:%f", ctl.thrust);
 	box(winBox, 0 , 0);
 	wnoutrefresh(winBox);
 	wnoutrefresh(win);
@@ -116,18 +116,16 @@ int main(int argc, char **argv) {
 				}
 				break;
 			case 'f':
-				if ((((int32_t) ctl.thrust) - THURST_STEPSIZE) < 0) {
-					ctl.thrust = 0;
-					break;
-				}
 				ctl.thrust -= THURST_STEPSIZE;
+				if (ctl.thrust < -1) {
+					ctl.thrust = -1;
+				}
 				break;
 			case 'r':
-				if ((((int32_t) ctl.thrust) + THURST_STEPSIZE) > UINT16_MAX) {
-					ctl.thrust = UINT16_MAX;
-					break;
-				}
 				ctl.thrust += THURST_STEPSIZE;
+				if (ctl.thrust > 1.) {
+					ctl.thrust = 1;
+				}
 				break;
 			case 't':
 				ctl.roll = ctlSave.roll;
@@ -147,10 +145,10 @@ int main(int argc, char **argv) {
 				ctl.yaw = 0;
 				break;
 			case 'c':
-				ctl.thrust = (uint16_t) (0.4 * ((float) UINT16_MAX));
+				ctl.thrust = -0.2;
 				break;
 			case 'x':
-				ctl.thrust =  0;
+				ctl.thrust =  -1;
 				break;
 			case '1':
 #ifndef SYM
