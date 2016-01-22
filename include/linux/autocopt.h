@@ -2,6 +2,9 @@
 #define AUTOCOPT_H_
 #include <stdint.h>
 #include <sys/ioctl.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AUTOCOPT_MSG_SIZE 31
 
@@ -24,4 +27,7 @@ struct autocopt_msg {
 #define AUTOCOPT_IOCTL_BOOTLOADER _IO(AUTOCOPT_IOCTL_MAGIC, 0x43)
 #define AUTOCOPT_IOCTL_MIN 0x42
 #define AUTOCOPT_IOCTL_MAX 0x43
+#ifdef __cplusplus
+}
+#endif
 #endif

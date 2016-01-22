@@ -1,6 +1,9 @@
 #ifndef EMERGENCY_H_
 #define EMERGENCY_H_
 #include <autocopt/autocopt.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /** 
  * Send Emergency Shutdown
@@ -31,4 +34,7 @@ int32_t autocopt_setEntrypoint(struct autocopt *copt, uint32_t entry);
  * \return -1 on Error and 0 on Ok
  */
 int32_t autocopt_copyAppToMem(uint32_t dest, int srcFd);
+#ifdef __cplusplus
+}
+#endif
 #endif

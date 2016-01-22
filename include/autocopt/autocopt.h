@@ -3,6 +3,9 @@
 #include <stdint.h>
 #include <sys/types.h>
 #include <linux/autocopt.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifndef BIT
 /**
@@ -212,4 +215,7 @@ struct autocopt_pidValues{
  * \return 0 if OK -1 on can't send
  */
 int32_t autocopt_pid(struct autocopt *copt, struct autocopt_pidValues *values);
+#ifdef __cplusplus
+}
+#endif
 #endif
