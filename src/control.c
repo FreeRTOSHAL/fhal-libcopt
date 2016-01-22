@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <autocopt/autocopt.h>
 #include <ncurses.h>
+//#define SYM
 
 #define PITCH_STEPSIZE 0.01
 #define ROLL_SETPSIZE 0.01
@@ -55,8 +56,9 @@ static int32_t initScreen() {
 }
 
 int main(int argc, char **argv) {
-	struct autocopt *copt;
 	int ch;
+#ifndef SYM
+	struct autocopt *copt;
 	int32_t ret;
 	copt = autocopt_init(AUTOCOPT_DEFAULT_DEV);
 	if (copt == NULL) {
@@ -67,12 +69,14 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "Can't select mode\n");
 		return EXIT_FAILURE;
 	}
+#endif
 	initscr();
 	height = 30;
 	width = 30;
 	starty = (LINES - height) / 2;
 	startx = (COLS - width) / 2;
 	initScreen();
+	timeout(100);
 	while((ch = getch()) != 'z') {
 		switch(ch) {
 			case 'w':
@@ -137,21 +141,55 @@ int main(int argc, char **argv) {
 				break;
 			case 'z':
 				break;
+			case ERR:
+				ctl.roll = 0;
+				ctl.pitch = 0;
+				ctl.yaw = 0;
+				break;
+			case 'c':
+				ctl.thrust = (uint16_t) (0.4 * ((float) UINT16_MAX));
+				break;
+			case 'x':
+				ctl.thrust =  0;
+				break;
+			case '1':
+#ifndef SYM
+				ret = autocopt_select(copt, AUTOCOPT_MODE_SPECTRUM);
+				if (ret < 0) {
+					fprintf(stderr, "Can't select mode\n");
+					return EXIT_FAILURE;
+				}
+#endif
+				break;
+			case '2':
+#ifndef SYM
+				ret = autocopt_select(copt, AUTOCOPT_MODE_LINUX);
+				if (ret < 0) {
+					fprintf(stderr, "Can't select mode\n");
+					return EXIT_FAILURE;
+				}
+#endif
+				break;
+
 			default:
 				mvwprintw(win, 0, 0, "err: %c", ch);
 				break;
 		}
+#ifndef SYM
 		ret = autocopt_control(copt, &ctl);
 		if (ret < 0) {
 			mvwprintw(win, 0, 0, "can't send to copter");
 		}
+#endif
 		updateWin();
 	}
+#ifndef SYM
 	ret = autocopt_select(copt, AUTOCOPT_MODE_SPECTRUM);
 	if (ret < 0) {
 		fprintf(stderr, "Can't select mode\n");
 		return EXIT_FAILURE;
 	}
+#endif
 	endwin();
 
 	return EXIT_SUCCESS;
