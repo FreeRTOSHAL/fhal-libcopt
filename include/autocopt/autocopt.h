@@ -25,6 +25,8 @@ extern "C" {
 
 #define AUTOCOPT_MODE_SPECTRUM 0
 #define AUTOCOPT_MODE_LINUX 1
+#define AUTOCOPT_MODE_LINUX_THRUST_ONLY 2
+#define AUTOCOPT_MODE_LINUX_RPY_ONLY 3
 
 /**
  * Autocopt Handle
