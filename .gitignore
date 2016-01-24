@@ -32,3 +32,4 @@ src/reset
 src/clear
 src/control
 src/ping
+src/emergency

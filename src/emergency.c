@@ -12,6 +12,21 @@
 #include <autocopt/autocopt.h>
 #include <autocopt/emergency.h>
 #include "autocopt_prv.h"
+int32_t autocopt_emergencyLanding(struct autocopt *copt) {
+	struct autocopt_msg msg = {.type = AUTOCOPT_TYPE_EMERGENCY};
+	int32_t ret = autocopt_send(copt, &msg, 1);
+	if (ret < 0) {
+		return ret;
+	}
+	ret = autocopt_recv(copt, &msg, 1);
+	if (ret < 0) {
+		return ret;
+	}
+	if (msg.type != AUTOCOPT_TYPE_ACT) {
+		return -1;
+	}
+	return 0;
+}
 int32_t autocopt_shutdown(struct autocopt *copt) {
 	int ret;
 	ret = ioctl(copt->fd, AUTOCOPT_IOCTL_EMERGENCY_SHUTDOWN, NULL);

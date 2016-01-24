@@ -5,6 +5,19 @@
 extern "C" {
 #endif
 
+#define AUTOCOPT_DEFAULT_ADDR 0x3f000000UL
+#define AUTOCOPT_DEFAULT_ENTRYPOINT 0x3f000001UL
+
+/**
+ * Override Thrust Contol
+ * 
+ * This Funktion Override active Thrust and set Thrust to 40 % for 2 Sec and then shutdown Motor. 
+ * After calling this Function Copter response to all messages. Thrust Control can't reset again, restart of Program is needed.
+ * Call autocopt_reset() -> autocopt_setEntrypoint() -> autocopt_reset() for reset
+ * Optional reload Application over autocopt_copyAppToMem
+ */
+int32_t autocopt_emergencyLanding(struct autocopt *copt);
+
 /** 
  * Send Emergency Shutdown
  * 

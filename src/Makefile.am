@@ -24,7 +24,7 @@ libcopt_la_SOURCES = autocopt.c emergency.c
 libcopt_la_CFLAGS = -I$(top_srcdir)/include
 libcopt_la_LDFLAGS = -version-info 1:0:0
 
-bin_PROGRAMS=shutdown reset ping clear pid control
+bin_PROGRAMS=shutdown reset ping clear pid control emergency
 shutdown_SOURCES=shutdown.c
 shutdown_CFLAGS=-I$(top_srcdir)/include
 reset_SOURCES=reset.c
@@ -42,3 +42,6 @@ pid_LDADD=libcopt.la
 control_SOURCES=control.c
 control_CFLAGS=-I$(top_srcdir)/include
 control_LDADD=libcopt.la
+emergency_SOURCES=emer.c
+emergency_CFLAGS=-I$(top_srcdir)/include
+emergency_LDADD=libcopt.la

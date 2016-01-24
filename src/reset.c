@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
 		perror("open");
 		goto main_error1;
 	}
-	ret = autocopt_copyAppToMem(0x3f000000UL, fd);
+	ret = autocopt_copyAppToMem(AUTOCOPT_DEFAULT_ADDR, fd);
 	if (ret < 0) {
 		goto main_error2;
 	}
@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
 		perror("close");
 		goto main_error1;
 	}
-	ret = autocopt_setEntrypoint(copt, 0x3f000001UL);
+	ret = autocopt_setEntrypoint(copt, AUTOCOPT_DEFAULT_ENTRYPOINT);
 	if (ret < 0) {
 		goto main_error1;
 	}
