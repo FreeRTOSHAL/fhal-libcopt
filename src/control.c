@@ -9,6 +9,7 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <autocopt/autocopt.h>
+#include <autocopt/emergency.h>
 #include <ncurses.h>
 //#define SYM
 
@@ -63,6 +64,10 @@ int main(int argc, char **argv) {
 	copt = autocopt_init(AUTOCOPT_DEFAULT_DEV);
 	if (copt == NULL) {
 		return EXIT_FAILURE;
+	}
+	ret = autocopt_control(copt, &ctl);
+	if (ret < 0) {
+		mvwprintw(win, 0, 0, "can't send to copter");
 	}
 	ret = autocopt_select(copt, AUTOCOPT_MODE_LINUX);
 	if (ret < 0) {
@@ -154,8 +159,7 @@ int main(int argc, char **argv) {
 #ifndef SYM
 				ret = autocopt_select(copt, AUTOCOPT_MODE_SPECTRUM);
 				if (ret < 0) {
-					fprintf(stderr, "Can't select mode\n");
-					return EXIT_FAILURE;
+					mvwprintw(win, 0, 0, "Can't select mode\n");
 				}
 #endif
 				break;
@@ -163,8 +167,31 @@ int main(int argc, char **argv) {
 #ifndef SYM
 				ret = autocopt_select(copt, AUTOCOPT_MODE_LINUX);
 				if (ret < 0) {
-					fprintf(stderr, "Can't select mode\n");
-					return EXIT_FAILURE;
+					mvwprintw(win, 0, 0, "Can't select mode\n");
+				}
+#endif
+				break;
+			case '3':
+#ifndef SYM
+				ret = autocopt_select(copt, AUTOCOPT_MODE_LINUX_THRUST_ONLY);
+				if (ret < 0) {
+					mvwprintw(win, 0, 0, "Can't select mode\n");
+				}
+#endif
+				break;
+			case '4':
+#ifndef SYM
+				ret = autocopt_select(copt, AUTOCOPT_MODE_LINUX_RPY_ONLY);
+				if (ret < 0) {
+					mvwprintw(win, 0, 0, "Can't select mode\n");
+				}
+#endif
+				break;
+			case 'y':
+#ifndef SYM
+				ret = autocopt_emergencyLanding(copt);
+				if (ret < 0) {
+					mvwprintw(win, 0, 0, "Can't send emergency Landing\n");
 				}
 #endif
 				break;
